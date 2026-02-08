@@ -19,7 +19,7 @@ export default defineConfig(({ command }) => {
       sourcemap: true,
 
       rollupOptions: {
-        input: glob.sync("../aw-sanitarne/index.html"),
+        input: glob.sync("./src/**/**.html"),
         output: {
           manualChunks(id) {
             if (id.includes("node_modules")) {
