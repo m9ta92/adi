@@ -17,19 +17,6 @@ export default defineConfig(({ command }) => {
     root: ".",
     build: {
       sourcemap: true,
-
-      rollupOptions: {
-        input: glob.sync("./src/**/**.html"),
-        output: {
-          manualChunks(id) {
-            if (id.includes("node_modules")) {
-              return "vendor";
-            }
-          },
-          entryFileNames: "commonHelpers.js",
-        },
-      },
-      outDir: "dist",
     },
     plugins: [injectHTML(), FullReload(["./src/**/**.html"])],
   };
