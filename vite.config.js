@@ -1,10 +1,36 @@
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react-swc";
+import glob from "glob";
+import injectHTML from "vite-plugin-html-inject";
+import FullReload from "vite-plugin-full-reload";
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [react()],
-  build: {
-    sourcemap: true,
-  },
+export default defineConfig(({ command }) => {
+  return {
+    optimizeDeps: {
+      include: ["simplelightbox"],
+    },
+    ssr: {
+      external: ["simplelightbox"],
+    },
+    define: {
+      [command === "serve" ? "global" : "_global"]: {},
+    },
+    root: ".",
+    build: {
+      sourcemap: true,
+
+      rollupOptions: {
+        input: glob.sync("../aw-sanitarne/index.html"),
+        output: {
+          manualChunks(id) {
+            if (id.includes("node_modules")) {
+              return "vendor";
+            }
+          },
+          entryFileNames: "commonHelpers.js",
+        },
+      },
+      outDir: "../../dist",
+    },
+    plugins: [injectHTML(), FullReload(["./src/**/**.html"])],
+  };
 });
