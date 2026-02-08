@@ -17,6 +17,7 @@ export default defineConfig(({ command }) => {
     root: ".",
     build: {
       sourcemap: true,
+      outDir: "../dist",
     },
     plugins: [injectHTML(), FullReload(["./src/**/**.html"])],
   };
